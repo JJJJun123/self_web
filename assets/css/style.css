@@ -78,42 +78,20 @@ a {
   backdrop-filter: blur(2px);
 }
 
-/* 印章：田字格排「陈俊旭印」 */
-.seal {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 76px;
-  height: 76px;
-  border-radius: 10px;
-  background: var(--seal);
-  box-shadow:
-    0 2px 0 var(--seal-deep),
-    0 6px 18px rgba(177, 58, 42, 0.25);
-  text-decoration: none;
-  transform: rotate(-2deg);
-  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4);
-}
-.seal:hover {
-  transform: rotate(0deg) scale(1.04);
-}
-.seal span {
-  display: grid;
-  place-items: center;
-  color: var(--paper);
-  font-family: var(--serif-cn);
-  font-weight: 700;
-  font-size: 26px;
-  line-height: 1;
-}
-
+/* 竖排名字，兼作回顶锚点 */
 .rail-name {
   writing-mode: vertical-rl;
   letter-spacing: 0.45em;
   font-family: var(--serif-cn);
   font-weight: 700;
   font-size: 30px;
-  margin: 36px 0 auto;
+  margin: 8px 0 auto;
   color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.rail-name:hover {
+  color: var(--seal);
 }
 
 .rail-nav {
@@ -577,14 +555,6 @@ main {
     border-right: 0;
     border-bottom: 1px solid var(--hairline);
     background: rgba(246, 242, 234, 0.92);
-  }
-  .seal {
-    width: 44px;
-    height: 44px;
-    border-radius: 7px;
-  }
-  .seal span {
-    font-size: 15px;
   }
   .rail-name {
     writing-mode: horizontal-tb;
