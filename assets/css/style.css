@@ -5,7 +5,7 @@
 
 :root {
   --paper: #f6f2ea; /* 宣纸底色 */
-  --paper-deep: #efe9dc; /* 略深一层的纸色，用于卡片 */
+  --paper-deep: #efe9dc; /* 略深一层的纸色 */
   --ink: #1b1812; /* 墨色主文字 */
   --ink-soft: #57503f; /* 次级文字 */
   --seal: #b13a2a; /* 印章红 */
@@ -42,7 +42,7 @@ body {
   color: var(--paper);
 }
 
-/* 纸张颗粒感：SVG 噪点叠加，营造印刷质感 */
+/* 纸张颗粒感：SVG 噪点叠加 */
 .grain {
   position: fixed;
   inset: 0;
@@ -55,11 +55,6 @@ body {
 
 a {
   color: inherit;
-}
-
-em {
-  font-style: normal;
-  color: var(--seal);
 }
 
 /* ============ 左侧固定栏 ============ */
@@ -83,7 +78,7 @@ em {
   backdrop-filter: blur(2px);
 }
 
-/* 印章：田字格排「陈俊旭印」，传统印章右起竖读 → 视觉排列为 陈旭 / 俊印 */
+/* 印章：田字格排「陈俊旭印」 */
 .seal {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -177,15 +172,19 @@ main {
   max-width: 1080px;
 }
 
-/* ———— 首屏 ———— */
+/* ———— 首屏：左文右图 ———— */
 .hero {
-  min-height: 92vh;
+  min-height: 68vh;
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 96px 0 64px;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(30px, 6vw, 80px);
+  padding: 84px 0 64px;
   border-bottom: 1px solid var(--hairline);
+}
+.hero-text {
+  flex: 1;
 }
 
 .hero-kicker {
@@ -195,11 +194,10 @@ main {
   color: var(--seal);
   margin-bottom: 22px;
 }
-
 .hero h1 {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 .hero-cn {
   font-family: var(--serif-cn);
@@ -216,23 +214,14 @@ main {
   color: var(--ink-soft);
   letter-spacing: 0.04em;
 }
-
-.hero-tag {
-  margin-top: 30px;
-  font-size: clamp(16px, 2vw, 19px);
-  font-family: var(--serif-cn);
-  line-height: 2;
-  max-width: 560px;
-}
-
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0 6px;
   list-style: none;
-  margin-top: 26px;
+  margin-top: 32px;
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--ink-soft);
 }
 .hero-meta li + li::before {
@@ -241,44 +230,10 @@ main {
   color: var(--hairline);
 }
 
-/* 台账式数字面板 */
-.hero-figures {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--hairline);
-  border-radius: 4px;
-  margin-top: 54px;
-  background: rgba(255, 255, 255, 0.35);
-  max-width: 720px;
-  overflow: hidden;
-}
-.figure {
-  padding: 18px 20px 14px;
-  border-right: 1px solid var(--hairline);
-}
-.figure:last-child {
-  border-right: 0;
-}
-.figure b {
-  display: block;
-  font-family: var(--mono);
-  font-weight: 500;
-  font-size: clamp(26px, 3.4vw, 38px);
-  line-height: 1.15;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-.figure span {
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-
-/* 首屏头像：右上角错位叠放 */
+/* 首屏头像 */
 .hero-portrait {
-  position: absolute;
-  right: 0;
-  top: clamp(70px, 12vh, 130px);
-  width: clamp(150px, 19vw, 230px);
+  flex-shrink: 0;
+  width: clamp(190px, 24vw, 280px);
 }
 .hero-portrait img {
   width: 100%;
@@ -289,20 +244,6 @@ main {
   box-shadow:
     12px 12px 0 var(--paper-deep),
     12px 12px 0 1px var(--hairline);
-}
-.portrait-stamp {
-  position: absolute;
-  right: -12px;
-  bottom: -14px;
-  background: var(--seal);
-  color: var(--paper);
-  font-family: var(--serif-cn);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  padding: 5px 8px;
-  border-radius: 3px;
-  transform: rotate(3deg);
-  box-shadow: 0 3px 10px rgba(177, 58, 42, 0.3);
 }
 
 /* ———— 章节通用 ———— */
@@ -342,7 +283,7 @@ main {
 
 /* ———— 01 简介 ———— */
 .about-grid {
-  max-width: 720px;
+  max-width: 760px;
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -362,6 +303,7 @@ main {
   color: var(--ink-soft);
   border-left: 3px solid var(--seal);
   padding-left: 14px;
+  line-height: 1.9;
 }
 
 /* ———— 02 经历：台账时间线 ———— */
@@ -426,96 +368,7 @@ main {
   font-weight: 600;
 }
 
-/* ———— 03 项目卡片 ———— */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 18px;
-}
-.card {
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid var(--hairline);
-  border-radius: 4px;
-  padding: 26px 24px 22px;
-  position: relative;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--seal);
-  box-shadow: 0 14px 30px rgba(27, 24, 18, 0.08);
-}
-.card-no {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--seal);
-  letter-spacing: 0.15em;
-  margin-bottom: 14px;
-}
-.card h3 {
-  font-family: var(--serif-cn);
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-.card p {
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  line-height: 1.9;
-}
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 16px;
-}
-.tags span {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.05em;
-  border: 1px solid var(--hairline);
-  border-radius: 2px;
-  padding: 2px 8px;
-  color: var(--ink-soft);
-}
-
-/* ———— 04 能力 ———— */
-.skills {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  max-width: 820px;
-}
-.skill-col h3 {
-  font-family: var(--serif-cn);
-  font-size: 19px;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--ink);
-}
-.skill-col ul {
-  list-style: none;
-}
-.skill-col li {
-  padding: 9px 2px;
-  border-bottom: 1px dashed var(--hairline);
-  font-size: 14.5px;
-  color: var(--ink-soft);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.skill-col li::before {
-  content: "—";
-  color: var(--seal);
-  font-family: var(--mono);
-}
-
-/* ———— 05 资历 ———— */
+/* ———— 03 资历 ———— */
 .creds {
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr;
@@ -546,15 +399,11 @@ main {
   margin-top: 10px;
   letter-spacing: 0.06em;
 }
-
 .edu h3 {
   font-family: var(--serif-cn);
   font-size: 17px;
   margin-bottom: 14px;
   color: var(--seal);
-}
-.edu h3 + .edu-item {
-  margin-top: 0;
 }
 .edu-item {
   display: flex;
@@ -580,7 +429,7 @@ main {
   margin-top: 26px;
 }
 
-/* ———— 06 联系 ———— */
+/* ———— 04 联系 ———— */
 .contact {
   border-bottom: 0;
   padding-bottom: 80px;
@@ -625,10 +474,6 @@ main {
 }
 
 .footer {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
   padding: 26px 0 34px;
   border-top: 1px solid var(--hairline);
   font-family: var(--mono);
@@ -648,8 +493,6 @@ main {
   opacity: 1;
   transform: none;
 }
-
-/* 首屏元素依次入场 */
 .hero .reveal:nth-child(1) {
   transition-delay: 0.05s;
 }
@@ -659,20 +502,12 @@ main {
 .hero .reveal:nth-child(3) {
   transition-delay: 0.3s;
 }
-.hero .reveal:nth-child(4) {
-  transition-delay: 0.45s;
-}
-.hero .reveal:nth-child(5) {
-  transition-delay: 0.6s;
-}
 .hero-portrait.reveal {
-  transition-delay: 0.5s;
+  transition-delay: 0.35s;
 }
 
 .section .section-head,
 .entry,
-.card,
-.skill-col,
 .cert,
 .edu,
 .contact-lede,
@@ -685,31 +520,12 @@ main {
 }
 .in-view .section-head,
 .in-view .entry,
-.in-view .card,
-.in-view .skill-col,
 .in-view .cert,
 .in-view .edu,
 .in-view .contact-lede,
 .in-view .contact-links {
   opacity: 1;
   transform: none;
-}
-
-/* 卡片错峰 */
-.in-view .card:nth-child(2) {
-  transition-delay: 0.08s;
-}
-.in-view .card:nth-child(3) {
-  transition-delay: 0.16s;
-}
-.in-view .card:nth-child(4) {
-  transition-delay: 0.24s;
-}
-.in-view .card:nth-child(5) {
-  transition-delay: 0.32s;
-}
-.in-view .card:nth-child(6) {
-  transition-delay: 0.4s;
 }
 .in-view .entry:nth-child(2) {
   transition-delay: 0.12s;
@@ -725,8 +541,6 @@ main {
   .reveal,
   .section .section-head,
   .entry,
-  .card,
-  .skill-col,
   .cert,
   .edu,
   .contact-lede,
@@ -744,16 +558,6 @@ main {
   }
   .edu {
     grid-column: 1 / -1;
-  }
-  .hero-figures {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .figure:nth-child(2) {
-    border-right: 0;
-  }
-  .figure:nth-child(1),
-  .figure:nth-child(2) {
-    border-bottom: 1px solid var(--hairline);
   }
 }
 
@@ -804,13 +608,14 @@ main {
     margin-left: 0;
   }
   .hero {
+    flex-direction: column-reverse;
+    align-items: flex-start;
     min-height: auto;
-    padding-top: 64px;
+    padding-top: 48px;
+    gap: 32px;
   }
   .hero-portrait {
-    position: static;
-    width: 180px;
-    margin-top: 40px;
+    width: 170px;
   }
   .entry {
     grid-template-columns: 1fr;
@@ -818,9 +623,6 @@ main {
   }
   .entry-when br {
     display: none;
-  }
-  .skills {
-    grid-template-columns: 1fr;
   }
   .creds {
     grid-template-columns: 1fr;
