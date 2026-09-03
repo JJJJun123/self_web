@@ -1,0 +1,51 @@
+name: Deploy
+
+# 推到 master 就自动同步到 VPS；也可以在 Actions 页面手动触发
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - "README.md"
+      - ".github/**"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-me
+  cancel-in-progress: true
+
+jobs:
+  rsync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 准备 SSH（固定 host key，不用 StrictHostKeyChecking=no）
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: rsync 到 /var/www/me
+        run: |
+          rsync -avz --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.DS_Store' \
+            --exclude '._*' \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes" \
+            ./ root@45.76.111.206:/var/www/me/
+
+      - name: 验证线上已更新
+        run: |
+          sleep 3
+          body=$(curl -fsSL --max-time 30 "https://me.jjjj789.win/?cb=${GITHUB_SHA}")
+          for kw in "个人项目" "Matcher"; do
+            echo "$body" | grep -q "$kw" || { echo "::error::线上未找到关键词: $kw"; exit 1; }
+          done
+          echo "线上验证通过"
+
+      - name: 清理密钥
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
