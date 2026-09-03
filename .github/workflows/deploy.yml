@@ -27,7 +27,9 @@ jobs:
           printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: rsync 到 /var/www/me
+      # 目标写 "." 而非绝对路径：rrsync 已把根锁在 /var/www/me，
+      # 传绝对路径会被再拼一次，变成 /var/www/me/var/www/me
+      - name: rsync 到站点目录
         run: |
           rsync -avz --delete \
             --exclude '.git' \
@@ -35,7 +37,7 @@ jobs:
             --exclude '.DS_Store' \
             --exclude '._*' \
             -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes" \
-            ./ root@45.76.111.206:/var/www/me/
+            ./ root@45.76.111.206:.
 
       - name: 验证线上已更新
         run: |
